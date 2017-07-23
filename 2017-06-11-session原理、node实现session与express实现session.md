@@ -1,11 +1,4 @@
----
-title: session原理、node实现session与express实现session
-date: 2017-06-11 14:04:05
-tags:
-- session
-- node
-- express
----
+# session原理、node实现session与express实现session
 
 ## 原理
 
@@ -18,8 +11,6 @@ session 存在的意义，是为了解决HTTP 是与状态协议所带来的问�
 3. 然后服务端通过`set-cookie` 将session_id 通过cookie 保存在客户端中，如有需要，可以配置过期时间参数
 4. 客户端之后访问中，便会将cookie 通过首部传入服务端中，服务端通过识别判断出客户端是处于登录状态，便返回对应登录的信息
 5. 如果客户端选择注销登录，那传入服务端后，服务端便删除存储在全局对象的中此键
-
-<!-- more -->
 
 ## 简要代码
 

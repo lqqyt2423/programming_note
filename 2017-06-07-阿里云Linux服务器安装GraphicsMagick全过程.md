@@ -1,18 +1,8 @@
----
-title: 阿里云Linux服务器安装GraphicsMagick全过程
-date: 2017-06-07 14:00:25
-tags:
-- node
-- GraphicsMagick
-- 阿里云
-- Linux
----
+# 阿里云Linux服务器安装GraphicsMagick全过程
 
 本次安装的出发点是需要解决一个需求：让node 后端可以处理图片，在图片上写入文字。
 
 所以下面是整个程序的解决路径：
-
-<!-- more -->
 
 1. 寻找得知node 库gm 可用来处理图片，一般的修改尺寸和在图片上写入文字，尤其是中文文字，都是可以解决的。
 

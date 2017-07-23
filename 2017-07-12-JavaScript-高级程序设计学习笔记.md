@@ -1,9 +1,4 @@
----
-title: JavaScript 高级程序设计学习笔记
-date: 2017-07-12 14:47:41
-tags:
-- JavaScript
----
+# JavaScript 高级程序设计学习笔记
 
 ## 第1章 JavaScript 简介
 
@@ -18,8 +13,6 @@ ECMAScript ek-ma-script
 - 核心（ECMAScript），提供核心语言功能
 - 文档对象模型（DOM），提供访问和操作网页内容的方法和接口
 - 浏览器对象模型（BOM），提供与浏览器交互的方法和接口
-
-<!-- more -->
 
 ### ECMAScript
 

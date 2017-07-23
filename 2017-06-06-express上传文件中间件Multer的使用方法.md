@@ -1,10 +1,4 @@
----
-title: express上传文件中间件Multer的使用方法
-date: 2017-06-06 13:24:40
-tags:
-- express
-- multer
----
+# express上传文件中间件Multer的使用方法
 
 `Multer` 用于处理`multipart/form-data` 类型的表单数据，主要用于上传文件。
 
@@ -44,8 +38,6 @@ app.post('/upload', upload.single('image'), function(req, res, next){
 ```
 
 如需自定义保存的文件名称，可配置如下：
-
-<!-- more -->
 
 ```javascript
 var storage = multer.diskStorage({
