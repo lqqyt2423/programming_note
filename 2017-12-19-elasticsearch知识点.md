@@ -1,46 +1,32 @@
 # elasticsearch 知识点
 
-### 安装中文分词插件
+### 搜索
+
+#### 全文搜索
+
+##### match
 
 ```
-https://github.com/medcl/elasticsearch-analysis-ik/
-```
-
-### 新建索引
-
-```
-curl -XPUT localhost:9200/[index]
-```
-
-### 创建映射时的设置
-
-下面`title` 字段表示用`ik` 插件分词，`link` 字段表示不进行任何分词
-
-```
-curl -XPOST localhost:9200/[index]/[type]/_mapping -d '{
-  "properties": {
-    "title": {
-      "type": "text",
-      "analyzer": "ik_max_word",
-      "search_analyzer": "ik_max_word"
-    },
-    "link": {
-      "type": "string",
-      "index": "not_analyzed"
+curl localhost:9200/[index]/[type]/_search?pretty -d '{
+  "query": {
+    "match": {
+      "[field]": "[keyword]"
     }
   }
 }'
 ```
 
-### 查看分词配置
-
-`pretty` 参数表示格式化查看
+##### match_phrase
 
 ```
-curl localhost:9200/[index]/_mapping/[type]?pretty
+curl localhost:9200/[index]/[type]/_search?pretty -d '{
+  "query": {
+    "match_phrase": {
+      "[field]": "[keyword]"
+    }
+  }
+}'
 ```
-
-### 搜索
 
 #### 多个搜索/过滤条件
 
@@ -137,6 +123,44 @@ curl localhost:9200/[index]/[type]/_search?pretty -d '{
 }'
 ```
 
+### 提升某个搜索权重
+
+#### match
+
+`boost: 10` 表示提升此条件10倍打分
+
+```
+curl localhost:9200/[index]/[type]/_search -d '{
+  "query": {
+    "bool": {
+      "should": [
+        { "match": { "[field]": { "query": "[keyword1]", "boost": 10 } } },
+        { "match": { "[field]": "[keyword2]" } }
+      ],
+      "minimum_should_match": 1
+    }
+  }
+}'
+```
+
+#### term
+
+`boost: 10` 表示提升此条件10倍打分
+
+```
+curl localhost:9200/[index]/[type]/_search -d '{
+  "query": {
+    "bool": {
+      "should": [
+        { "term": { "[field]": { "value": "[keyword1]", "boost": 10 } } }，
+        { "match": { "[field]": "[keyword2]" } }
+      ],
+      "minimum_should_match": 1
+    }
+  }
+}'
+```
+
 ### 聚合
 
 ```
@@ -155,6 +179,12 @@ let aggs = { tags_count: { terms: { field: 'tags', size: 100 } } };
 
 ```
 curl localhost:9200/[index]/[type]/_count
+```
+
+### 列出所有索引
+
+```
+curl localhost:9200/_cat/indices
 ```
 
 ### 删除索引
@@ -183,4 +213,44 @@ curl -XPOST 'localhost:9200/_bulk?pretty' -H 'Content-Type: application/json' -d
 { "update" : {"_id" : "1", "_type" : "type1", "_index" : "test"} }
 { "doc" : {"field2" : "value2"} }
 '
+```
+
+### 安装中文分词插件
+
+```
+https://github.com/medcl/elasticsearch-analysis-ik/
+```
+
+### 新建索引
+
+```
+curl -XPUT localhost:9200/[index]
+```
+
+### 创建映射时的设置
+
+下面`title` 字段表示用`ik` 插件分词，`link` 字段表示不进行任何分词
+
+```
+curl -XPOST localhost:9200/[index]/[type]/_mapping -d '{
+  "properties": {
+    "title": {
+      "type": "text",
+      "analyzer": "ik_max_word",
+      "search_analyzer": "ik_max_word"
+    },
+    "link": {
+      "type": "string",
+      "index": "not_analyzed"
+    }
+  }
+}'
+```
+
+### 查看分词配置
+
+`pretty` 参数表示格式化查看
+
+```
+curl localhost:9200/[index]/_mapping/[type]?pretty
 ```
