@@ -254,3 +254,9 @@ curl -XPOST localhost:9200/[index]/[type]/_mapping -d '{
 ```
 curl localhost:9200/[index]/_mapping/[type]?pretty
 ```
+
+### 测试分词结果
+
+```
+curl -XGET 'localhost:9200/[index]/_analyze?field=[field]&text=[keyword]&pretty'
+```
