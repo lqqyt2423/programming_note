@@ -18,4 +18,7 @@ Object.prototype.toString.call(/a/)
 
 Object.prototype.toString.call(new Date())
 // => "[object Date]"
+
+Object.prototype.toString.call(new Error())
+// => "[object Error]"
 ```
