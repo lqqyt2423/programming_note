@@ -29,4 +29,15 @@ docker container ls --all
 docker ps
 docker container kill id
 docker container rm id
+docker container exec -it [containerID] /bin/bash
+```
+
+## MySQL 相关
+
+```
+show variables like 'wait_timeout';
+set global wait_timeout=10;
+show variables like 'interactive_timeout';
+set global interactive_timeout=10;
+show variables like '%max_connections%';
 ```
