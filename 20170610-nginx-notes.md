@@ -1,20 +1,20 @@
-# nginx学习笔记
+# Nginx 学习笔记
 
 ## 基本操作
 
-Mac 上安装nginx：
+Mac 上安装 Nginx：
 
 ```
 brew install nginx
 ```
 
-启用nginx（可修改此配置文件）：
+启用 Nginx（可修改此配置文件）：
 
 ```
 sudo nginx -c /usr/local/etc/nginx/nginx.conf
 ```
 
-Mac 上Log 文件地址：
+Mac 上 Log 文件地址：
 
 ```
 /usr/local/var/log/nginx
@@ -52,15 +52,15 @@ Error log path:
 /usr/local/var/log/nginx
 ```
 
-### http basic auth
+## http basic auth
 
-#### 1. 生成密码
+### 1. 生成密码
 
 ```shell
 printf "your_username:$(openssl passwd -crypt your_password)\n" >> conf/passwd
 ```
 
-#### 2. 配置
+### 2. 配置
 
 ```nginx
 location /kibana/ {
@@ -154,19 +154,13 @@ server {
 server {
   listen 80;
   server_name example.com;
-  
+
   location /app/ {
     rewrite ^/app/(.*) /$1 break;
     proxy_pass http://127.0.0.1:3000;
   }
 }
 ```
-
-## 参考网址
-
-- [nginx 配置之 proxy_pass 神器！](https://www.web-tinker.com/article/21202.html)
-- [nginx配置location总结及rewrite规则写法](http://seanlook.com/2015/05/17/nginx-location-rewrite/)
-- [nginx配置url重写](https://xuexb.com/post/nginx-url-rewrite.html)
 
 ## 配置PHP时踩的坑
 
@@ -211,11 +205,45 @@ location ~ \.php$ {
 
 之后在`/usr/local/var/www/` 此文件夹中编辑一个最简单的php 文件即可检查是否配置成功。这个文件夹有个关于`html` 的链接，所以上面的`root` 选项配置的是`html`。
 
-### 参考网址
+## 实现二级域名转发
 
+```nginx
+server {
+        listen       80;
+        server_name  *.abc.com;
+
+        if ($http_host ~* "^(.*?)\.abc\.com$") {    #正则表达式
+                set $domain $1;                     #设置变量
+        }
+
+        location / {
+            if ($domain ~* "shop") {
+               proxy_pass http://abc.com:3001;      #域名中有shop，转发到3001端口
+            }
+            if ($domain ~* "mail") {
+               proxy_pass http://abc.com:3002;      #域名中有mail，转发到3002端口
+            }
+
+            tcp_nodelay     on;
+            proxy_set_header Host            $host;
+            proxy_set_header X-Real-IP       $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            #以上三行，目的是将代理服务器收到的用户的信息传到真实服务器上
+
+            root   html;
+            index  index.html index.htm;            #默认情况
+        }
+```
+
+## 参考网址
+
+- [nginx 配置之 proxy_pass 神器！](https://www.web-tinker.com/article/21202.html)
+- [nginx配置location总结及rewrite规则写法](http://seanlook.com/2015/05/17/nginx-location-rewrite/)
+- [nginx配置url重写](https://xuexb.com/post/nginx-url-rewrite.html)
 - [nginx php-fpm安装配置](https://wizardforcel.gitbooks.io/nginx-doc/content/Text/6.5_nginx_php_fpm.html)
 - [nginx和php-fpm基础环境的安装和配置](https://segmentfault.com/a/1190000003067656)
 - [MAC下尝试PHP7 alpha版本的安装](https://segmentfault.com/a/1190000002904436)
 - [Mac下安装PHP开发环境](http://youyusan.github.io/2016/01/30/php-nginx-in-mac/)
 - [php-fpm的安装和启动](https://www.zybuluo.com/phper/note/72879)
 - [编译安装nginx1.9.7+php7.0.0服务器环境](https://segmentfault.com/a/1190000004123048)
+- [nginx实现二级域名转发](https://blog.csdn.net/Metropolis_cn/article/details/73613022)

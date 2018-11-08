@@ -33,3 +33,6 @@ echo "# $title\n" > $key
 
 echo "\nGenerated the file:"
 echo $key
+
+# 打开文件
+code $key
