@@ -41,3 +41,14 @@ show variables like 'interactive_timeout';
 set global interactive_timeout=10;
 show variables like '%max_connections%';
 ```
+
+### Linux 权限相关
+
+```
+chown -R ubuntu code
+chgrp -R ubuntu code
+```
+
+### mongoose update createdAt
+
+use doc.save() other than model.findByIdAndUpdate()

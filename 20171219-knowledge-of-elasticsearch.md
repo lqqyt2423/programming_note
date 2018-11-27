@@ -247,7 +247,7 @@ curl -XPOST localhost:9200/[index]/[type]/_mapping -d '{
 }'
 ```
 
-### 查看分词配置
+### 查看 index mapping
 
 `pretty` 参数表示格式化查看
 
@@ -259,4 +259,22 @@ curl localhost:9200/[index]/_mapping/[type]?pretty
 
 ```
 curl -XGET 'localhost:9200/[index]/_analyze?field=[field]&text=[keyword]&pretty'
+```
+
+### 设置别名
+
+```
+curl -XPUT 'localhost:9200/[index]/_alias/[alias_name]'
+```
+
+### 查看别名
+
+```
+curl -XGET 'localhost:9200/[index]/_alias/*'
+```
+
+### 查看数据
+
+```
+curl 'localhost:9200/[index]/[type]/_search?pretty' -H 'Content-Type: application/json' -d '{ "size": 5 }'
 ```
