@@ -42,13 +42,19 @@ set global interactive_timeout=10;
 show variables like '%max_connections%';
 ```
 
-### Linux 权限相关
+## Linux 权限相关
 
-```
+```bash
 chown -R ubuntu code
 chgrp -R ubuntu code
 ```
 
-### mongoose update createdAt
+## mongoose update createdAt
 
 use doc.save() other than model.findByIdAndUpdate()
+
+## HTTP 实体首部
+
+如果对实体进行了压缩，Content-Length 为压缩后的大小，而非原始大小。Content-MD5 的计算也为压缩后再计算。
+
+Content-Type 为原始实体主体的媒体类型，如果实体经过内容编码如gzip压缩，Content-Type 仍是编码之前的实体类型。
