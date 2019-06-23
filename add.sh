@@ -1,14 +1,19 @@
-#!/bin/sh
+#!/bin/bash
+set -o nounset
+set -o errexit
+
+title=
+key=
 
 while [ -z "$title" ]
 do
-  read -p "Enter title: " title
+  read -p "请输入文章标题: " title
 done
 
 generateKey() {
   while [ -z "$key" ]
   do
-    read -p "Enter key: " key
+    read -p "请输入英文名称: " key
   done
 
   # 转换为小写
@@ -19,20 +24,22 @@ generateKey() {
   key=$(date +%Y%m%d)-$key.md
 
   # 如果目录中存在此文件，提示且重复调用此函数
-  [ -e $key ] && echo "The file $key existed, please change the key you input" && unset key && generateKey
+  if test -e $key
+  then
+    echo 文件${key}已存在，重新输入
+    key=
+    generateKey
+  fi
 }
 
 generateKey
 
-# 字符长度
-# echo ${#key}
+echo
+echo 标题: ${title}
+echo 文件名: ${key}
 
 # 创建文件并向文件中写入标题
 touch $key
-echo "# $title\n" > $key
+echo -e "# $title\n" > $key
 
-echo "\nGenerated the file:"
-echo $key
-
-# 打开文件
-code $key
+echo "done"

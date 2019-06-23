@@ -1,4 +1,4 @@
 # 编程中的知识点记录
 
 - [github 地址](https://github.com/lqqyt2423/programming_note)
-- [web 地址](https://blog.dy6.top)
+- [web 地址](https://liqiang.applinzi.com/blog)
